@@ -30,6 +30,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
                     value = inputData.electricGasSwitch.toString(),

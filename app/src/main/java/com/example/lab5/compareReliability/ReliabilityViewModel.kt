@@ -16,7 +16,7 @@ class ReliabilityViewModel : ViewModel() {
 
     fun calculateResult() {
         val failureFrequency = calculateFailureFrequency()
-        val averageRecoveryDuration = calculateAverageRecoveryDuration()
+        val averageRecoveryDuration = calculateAverageRecoveryDuration(failureFrequency)
         val emergencyCoeff = calculateEmergencyCoeff(failureFrequency, averageRecoveryDuration)
         val planCoeff = calculatePlanCoeff()
         val failureFreqForTwoSys: Double =
@@ -37,8 +37,8 @@ class ReliabilityViewModel : ViewModel() {
         return inputData.value!!.inputSwitch + inputData.value!!.pl110 + inputData.value!!.connections + inputData.value!!.transformer + inputData.value!!.electricGasSwitch
     }
 
-    private fun calculateAverageRecoveryDuration(): Double {
-        return inputData.value!!.inputSwitch * inputData.value!!.inputSwitchT + inputData.value!!.pl110 * inputData.value!!.pl110T + inputData.value!!.connections * inputData.value!!.connectionsT + inputData.value!!.transformer * inputData.value!!.transformerT + inputData.value!!.electricGasSwitch * inputData.value!!.electricGasSwitch
+    private fun calculateAverageRecoveryDuration(failureFrequency: Double): Double {
+        return (inputData.value!!.inputSwitch * inputData.value!!.inputSwitchT + inputData.value!!.pl110 * inputData.value!!.pl110T + inputData.value!!.connections * inputData.value!!.connectionsT + inputData.value!!.transformer * inputData.value!!.transformerT + inputData.value!!.electricGasSwitch * inputData.value!!.electricGasSwitchT)/failureFrequency
     }
 
     private fun calculateEmergencyCoeff(
