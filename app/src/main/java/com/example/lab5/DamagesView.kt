@@ -1,4 +1,4 @@
-package com.example.lab5.calculateDamages
+package com.example.lab5
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.graphics.Color
+import com.example.lab5.calculateDamages.DamagesViewModel
 import com.example.lab5.calculateDamages.models.DamagesInputModel
 import com.example.lab5.calculateDamages.models.DamagesResulModel
 
@@ -16,46 +18,45 @@ import com.example.lab5.calculateDamages.models.DamagesResulModel
 fun DamagesView(viewModel: DamagesViewModel = viewModel()) {
     val inputModel by viewModel.inputModel.observeAsState(DamagesInputModel())
     val resultModel by viewModel.resulModel.observeAsState(DamagesResulModel())
-    var showDialog by remember { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        TextField(
+        OutlinedTextField(
             value = inputModel.failureFrequency.toString(),
             onValueChange = { viewModel.setFailureFrequency(it.toDoubleOrNull() ?: 0.0) },
-            label = { Text("Failure Frequency") },
+            label = { Text("Частота відмов") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.restoreTile.toString(),
             onValueChange = { viewModel.setRestoreTile(it.toDoubleOrNull() ?: 0.0) },
-            label = { Text("Restore Tile") },
+            label = { Text("Час відновлення") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.Pm.toString(),
             onValueChange = { viewModel.setPm(it.toDoubleOrNull() ?: 0.0) },
             label = { Text("Pm") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.Tm.toString(),
             onValueChange = { viewModel.setTm(it.toDoubleOrNull() ?: 0.0) },
             label = { Text("Tm") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.kp.toString(),
             onValueChange = { viewModel.setKp(it.toDoubleOrNull() ?: 0.0) },
             label = { Text("Kp") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.Za.toString(),
             onValueChange = { viewModel.setZa(it.toDoubleOrNull() ?: 0.0) },
             label = { Text("Za") },
             modifier = Modifier.fillMaxWidth()
         )
-        TextField(
+        OutlinedTextField(
             value = inputModel.Zp.toString(),
             onValueChange = { viewModel.setZp(it.toDoubleOrNull() ?: 0.0) },
             label = { Text("Zp") },
@@ -66,28 +67,19 @@ fun DamagesView(viewModel: DamagesViewModel = viewModel()) {
 
         Button(onClick = {
             viewModel.calculateResult()
-            showDialog = true
-        }) {
-            Text("Calculate")
+        },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Companion.Black, contentColor = MaterialTheme.colorScheme.onPrimary)
+        ) {
+            Text("Розрахувати")
         }
 
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = { showDialog = false },
-                title = { Text("Calculation Results") },
-                text = {
-                    Column {
-                        Text("MWa: ${resultModel.MWa}")
-                        Text("MWp: ${resultModel.MWp}")
-                        Text("Mz: ${resultModel.Mz}")
-                    }
-                },
-                confirmButton = {
-                    Button(onClick = { showDialog = false }) {
-                        Text("OK")
-                    }
-                }
-            )
-        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Displaying results directly below the inputs
+        Text("MWa: ${resultModel.MWa}", style = MaterialTheme.typography.bodyLarge)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("MWp: ${resultModel.MWp}", style = MaterialTheme.typography.bodyLarge)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("Mz: ${resultModel.Mz}", style = MaterialTheme.typography.bodyLarge)
     }
 }

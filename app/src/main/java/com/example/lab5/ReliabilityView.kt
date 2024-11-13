@@ -1,8 +1,7 @@
-package com.example.lab5.compareReliability
+package com.example.lab5
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,13 +15,13 @@ import com.example.lab5.compareReliability.models.ReliabilityInputModel
 import com.example.lab5.compareReliability.models.ReliabilityResultModel
 import com.example.lab5.ui.theme.Lab5Theme
 import androidx.compose.runtime.livedata.observeAsState
-
+import androidx.compose.ui.graphics.Color
+import com.example.lab5.compareReliability.ReliabilityViewModel
 
 @Composable
 fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
     val inputData by viewModel.inputData.observeAsState(ReliabilityInputModel())
     val resultData by viewModel.resultData.observeAsState(ReliabilityResultModel())
-    val openDialog = remember { mutableStateOf(false) }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
@@ -38,7 +37,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(electricGasSwitch = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Electric Gas Switch") },
+                    label = { Text("Електричний газовий вимикач") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -49,7 +48,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(pl110 = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("PL110") },
+                    label = { Text("ПЛ110") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -60,7 +59,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(transformer = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Transformer") },
+                    label = { Text("Трансформатор") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -71,7 +70,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(inputSwitch = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Input Switch") },
+                    label = { Text("Ввідний вимикач") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -82,7 +81,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(connections = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Connections") },
+                    label = { Text("З'єднання") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -93,7 +92,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(electricGasSwitchT = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Electric Gas Switch T") },
+                    label = { Text("Час відновлення електричного газового вимикача (T)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -104,7 +103,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(pl110T = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("PL110 T") },
+                    label = { Text("Час відновлення ПЛ110 (T)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -115,7 +114,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(transformerT = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Transformer T") },
+                    label = { Text("Час відновлення трансформатора (T)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -126,7 +125,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(inputSwitchT = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Input Switch T") },
+                    label = { Text("Час відновлення ввідного вимикача (T)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -137,7 +136,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(connectionsT = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Connections T") },
+                    label = { Text("Час відновлення з'єднань (T)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -148,7 +147,7 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(kppmax = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("KPP Max") },
+                    label = { Text("Максимальний КПП") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -159,39 +158,34 @@ fun ReliabilityView(viewModel: ReliabilityViewModel = viewModel()) {
                         viewModel.inputData.value =
                             inputData.copy(failureFreqSectionSwitcher = it.toDoubleOrNull() ?: 0.0)
                     },
-                    label = { Text("Failure Freq Section Switcher") },
+                    label = { Text("Частота відмов секційного вимикача") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = {
-                    viewModel.calculateResult()
-                    openDialog.value = true
-                }) {
-                    Text("Calculate")
+                Button(
+                    onClick = {
+                        viewModel.calculateResult()
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Companion.Black, contentColor = MaterialTheme.colorScheme.onPrimary)
+                ) {
+                    Text("Розрахувати")
                 }
 
-                if (openDialog.value) {
-                    AlertDialog(
-                        onDismissRequest = { openDialog.value = false },
-                        title = { Text("Reliability Calculation Result") },
-                        text = {
-                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                                Text("Failure Frequency: ${resultData.failureFrequency}")
-                                Text("Average Recovery Duration: ${resultData.averageRecoveryDuration}")
-                                Text("Emergency Coefficient: ${resultData.emergencyCoeff}")
-                                Text("Plan Coefficient: ${resultData.planCoeff}")
-                                Text("Failure Frequency for Two Systems: ${resultData.failureFreqForTwoSys}")
-                                Text("Failure Frequency with Section Switcher: ${resultData.failureFrequencyWithSectionSwitcher}")
-                            }
-                        },
-                        confirmButton = {
-                            TextButton(onClick = { openDialog.value = false }) {
-                                Text("OK")
-                            }
-                        }
-                    )
-                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Displaying results directly below the inputs
+                Text("Частота відмов: ${resultData.failureFrequency}", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Середня тривалість відновлення: ${resultData.averageRecoveryDuration}", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Коефіцієнт аварійного простою: ${resultData.emergencyCoeff}", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Коефіцієнт планового простою: ${resultData.planCoeff}", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Частота відмов для двох систем: ${resultData.failureFreqForTwoSys}", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("Частота відмов з секційним вимикачем: ${resultData.failureFrequencyWithSectionSwitcher}", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }

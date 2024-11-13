@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.lab5.calculateDamages.DamagesView
-import com.example.lab5.compareReliability.ReliabilityView
 
 @Composable
 fun NavigationApp(){
